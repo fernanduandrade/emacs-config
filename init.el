@@ -61,15 +61,14 @@
   :ensure t
   :bind (("C-x o" . ace-window)))
 
-;;Theme
-(add-to-list 'custom-theme-load-path "horizon-theme.el")
-(load-theme 'horizon t)
-;;(load-theme 'doom-vibrant t)
-
+;;Theme Horizon
+(use-package horizon-theme
+  :ensure t
+  :config (load-theme 'horizon))
 
 ;;Personal shortcut
 (global-set-key (kbd "C-<tab>") 'other-window)
-
+ 
 ;;Syntax check
 (use-package flycheck
   :ensure t
@@ -83,7 +82,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("e208e45345b91e391fa66ce028e2b30a6aa82a37da8aa988c3f3c011a15baa22" default)))
+    ("69b30fcd01e0bce8accefc2fd2f241b84ecbec13ec49719cdda5df550073886e" "e208e45345b91e391fa66ce028e2b30a6aa82a37da8aa988c3f3c011a15baa22" default)))
  '(package-selected-packages
    (quote
     (flycheck doom-themes ace-window all-the-icons neotree use-package))))
@@ -92,13 +91,12 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((t (:foreground "#aaacad" :background "#1C1E26")))))
 
 ;;Main Font
 (set-frame-font "Fantasque Sans Mono" nil t)
 
 ;;Font Ligature for Emacs
-;; Fira code
 ;; This works when using emacs --daemon + emacsclient
 (add-hook 'after-make-frame-functions (lambda (frame) (set-fontset-font t '(#Xe100 . #Xe16f) "Fira Code Symbol")))
 ;; This works when using emacs without server/client
