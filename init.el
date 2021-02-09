@@ -62,9 +62,8 @@
   :bind (("C-x o" . ace-window)))
 
 ;;Theme
-(use-package dracula-theme
-  :ensure t
-  :config(load-theme 'dracula t))
+(add-to-list 'custom-theme-load-path "horizon-theme.el")
+(load-theme 'horizon t)
 ;;(load-theme 'doom-vibrant t)
 
 
