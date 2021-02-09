@@ -64,7 +64,7 @@
 ;;Theme Horizon
 (use-package horizon-theme
   :ensure t
-  :config (load-theme 'horizon))
+  :config (load-theme 'horizon t))
 
 ;;Personal shortcut
 (global-set-key (kbd "C-<tab>") 'other-window)
