@@ -7,6 +7,8 @@
 ;;Remover scrollbar
 (scroll-bar-mode -1)
 
+(global-set-key (kbd "C-x S") 'shell)
+
 ;;Lines
 (global-linum-mode t)
 
@@ -25,6 +27,8 @@
 (add-to-list 'package-archives
 	     '("melpa" . "https://melpa.org/packages/"))
 
+
+
 ;;Package Initialize
 (package-initialize)
 
@@ -39,6 +43,30 @@
     (which-key-setup-side-window-right-bottom)
     (which-key-mode)
   ))
+
+(require 'elcord)
+(elcord-mode)
+
+;;Javascript configuration
+(add-to-list 'auto-mode-alist '("\\.jsx?$" . web-mode))
+
+(setq web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
+
+(require 'flycheck)
+
+(setq-default flycheck-disabled-checkers
+              (append flycheck-disabled-checkers
+                      '(javascript-jshint json-jsonlist)))
+
+;; Enable eslint checker for web-mode
+(flycheck-add-mode 'javascript-eslint 'web-mode)
+;; Enable flycheck globally
+(add-hook 'after-init-hook #'global-flycheck-mode)
+
+(add-hook 'flycheck-mode-hook 'add-node-modules-path)
+
+;;HTML emmet
+(add-hook 'web-mode-hook  'emmet-mode)
 
 (use-package auto-complete
   :ensure t
@@ -55,16 +83,18 @@
   :config
   (progn
     (setq neo-theme (if (display-graphic-p) 'icons 'default)))
+    (setq-default neo-show-hidden-files t)
   :bind (("C-\\" . 'neotree-toggle)))
 
 (use-package ace-window
   :ensure t
   :bind (("C-x o" . ace-window)))
 
-;;Theme Horizon
-(use-package horizon-theme
+;;Theme spacemacs but I prefer horizon
+(use-package spacemacs-theme
+  :defer t
   :ensure t
-  :config (load-theme 'horizon t))
+  :init (load-theme 'spacemacs-dark t))
 
 ;;Personal shortcut
 (global-set-key (kbd "C-<tab>") 'other-window)
@@ -85,7 +115,7 @@
     ("69b30fcd01e0bce8accefc2fd2f241b84ecbec13ec49719cdda5df550073886e" "e208e45345b91e391fa66ce028e2b30a6aa82a37da8aa988c3f3c011a15baa22" default)))
  '(package-selected-packages
    (quote
-    (flycheck doom-themes ace-window all-the-icons neotree use-package))))
+    (emmet-mode add-node-modules-path flycheck-color-mode-line web-mode prettier ## color-identifiers-mode highlight-blocks highlight git-gutter git html-script-src elixir-yasnippets elixir-mode elcord flycheck doom-themes ace-window all-the-icons neotree use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
