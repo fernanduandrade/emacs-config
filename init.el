@@ -49,7 +49,7 @@
 
 ;;Javascript configuration
 (add-to-list 'auto-mode-alist '("\\.jsx?$" . web-mode))
-
+(add-to-list 'auto-mode-alist '("\\.json$" . js-mode))
 (setq web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'")))
 
 (require 'flycheck)
@@ -65,7 +65,9 @@
 
 (add-hook 'flycheck-mode-hook 'add-node-modules-path)
 
+
 ;;HTML emmet
+(require 'emmet-mode)
 (add-hook 'web-mode-hook  'emmet-mode)
 
 (use-package auto-complete
@@ -104,6 +106,19 @@
   :ensure t
   :init (global-flycheck-mode t))
 
+;;Vue config 
+(setq vue-mode-packages
+  '(vue-mode))
+
+(setq vue-mode-excluded-packages '())
+
+(defun vue-mode/init-vue-mode ()
+  "Initialize my package"
+  (use-package vue-mode))
+(add-hook 'mmm-mode-hook
+          (lambda ()
+            (set-face-background 'mmm-default-submode-face nil)))
+
 ;;Melpa
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -115,7 +130,7 @@
     ("69b30fcd01e0bce8accefc2fd2f241b84ecbec13ec49719cdda5df550073886e" "e208e45345b91e391fa66ce028e2b30a6aa82a37da8aa988c3f3c011a15baa22" default)))
  '(package-selected-packages
    (quote
-    (emmet-mode add-node-modules-path flycheck-color-mode-line web-mode prettier ## color-identifiers-mode highlight-blocks highlight git-gutter git html-script-src elixir-yasnippets elixir-mode elcord flycheck doom-themes ace-window all-the-icons neotree use-package))))
+    (lsp-mode vue-mode emmet-mode add-node-modules-path flycheck-color-mode-line web-mode prettier ## color-identifiers-mode highlight-blocks highlight git-gutter git html-script-src elixir-yasnippets elixir-mode elcord flycheck doom-themes ace-window all-the-icons neotree use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
