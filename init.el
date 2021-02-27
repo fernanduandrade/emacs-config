@@ -28,13 +28,40 @@
 	     '("melpa" . "https://melpa.org/packages/"))
 
 
-
 ;;Package Initialize
 (package-initialize)
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
+
+(defun xah-syntax-color-hex ()
+  "Syntax color text of the form 「#ff1100」 and 「#abc」 in current buffer.
+URL `http://ergoemacs.org/emacs/emacs_CSS_colors.html'
+Version 2017-03-12"
+  (interactive)
+  (font-lock-add-keywords
+   nil
+   '(("#[[:xdigit:]]\\{3\\}"
+      (0 (put-text-property
+          (match-beginning 0)
+          (match-end 0)
+          'face (list :background
+                      (let* (
+                             (ms (match-string-no-properties 0))
+                             (r (substring ms 1 2))
+                             (g (substring ms 2 3))
+                             (b (substring ms 3 4)))
+                        (concat "#" r r g g b b))))))
+     ("#[[:xdigit:]]\\{6\\}"
+      (0 (put-text-property
+          (match-beginning 0)
+          (match-end 0)
+          'face (list :background (match-string-no-properties 0)))))))
+  (font-lock-flush))
+(add-hook 'css-mode-hook 'xah-syntax-color-hex)
+
+(setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
 
 (use-package which-key
   :ensure t
@@ -46,6 +73,24 @@
 
 (require 'elcord)
 (elcord-mode)
+
+(use-package prettier-js
+  :after js2-mode
+  :init
+  (add-hook 'js2-mode-hook 'prettier-js-mode)
+  (add-hook 'web-mode-hook 'prettier-js-mode)
+  :config
+  (setq prettier-js-args '("--trailing-comma" "all"
+                           "--bracket-spacing" "false"))
+
+  (defun enable-minor-mode (my-pair)
+    "Enable minor mode if filename match the regexp.  MY-PAIR is a cons cell (regexp . minor-mode)."
+    (if (buffer-file-name)
+        (if (string-match (car my-pair) buffer-file-name)
+            (funcall (cdr my-pair)))))
+  (add-hook 'web-mode-hook #'(lambda ()
+                               (enable-minor-mode
+                                '("\\.jsx?\\'" . prettier-js-mode)))))
 
 ;;Javascript configuration
 (add-to-list 'auto-mode-alist '("\\.jsx?$" . web-mode))
@@ -60,6 +105,7 @@
 
 ;; Enable eslint checker for web-mode
 (flycheck-add-mode 'javascript-eslint 'web-mode)
+
 ;; Enable flycheck globally
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
@@ -68,7 +114,23 @@
 
 ;;HTML emmet
 (require 'emmet-mode)
-(add-hook 'web-mode-hook  'emmet-mode)
+(add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
+(add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
+
+;; if you are helm user
+(use-package helm-lsp :commands helm-lsp-workspace-symbol)
+;; if you are ivy user
+(use-package lsp-ivy :commands lsp-ivy-workspace-symbol)
+(use-package lsp-treemacs :commands lsp-treemacs-errors-list)
+
+
+;; (use-package dap-LANGUAGE) to load the dap adapter for your language
+
+;; optional if you want which-key integration
+(use-package which-key
+    :config
+    (which-key-mode))
+
 
 (use-package auto-complete
   :ensure t
@@ -130,7 +192,7 @@
     ("69b30fcd01e0bce8accefc2fd2f241b84ecbec13ec49719cdda5df550073886e" "e208e45345b91e391fa66ce028e2b30a6aa82a37da8aa988c3f3c011a15baa22" default)))
  '(package-selected-packages
    (quote
-    (lsp-mode vue-mode emmet-mode add-node-modules-path flycheck-color-mode-line web-mode prettier ## color-identifiers-mode highlight-blocks highlight git-gutter git html-script-src elixir-yasnippets elixir-mode elcord flycheck doom-themes ace-window all-the-icons neotree use-package))))
+    (prettier-js dap-mode lsp-mode vue-mode emmet-mode add-node-modules-path flycheck-color-mode-line web-mode prettier ## color-identifiers-mode highlight-blocks highlight git-gutter git html-script-src elixir-yasnippets elixir-mode elcord flycheck doom-themes ace-window all-the-icons neotree use-package))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
