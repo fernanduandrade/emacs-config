@@ -68,6 +68,9 @@ Version 2017-03-12"
     (which-key-setup-side-window-right-bottom)
     (which-key-mode)
   ))
+(use-package jedi)
+(add-hook 'python-mode-hook 'jedi:setup)
+(setq jedi:complete-on-dot t)
 
 (use-package prettier-js
   :after js2-mode
@@ -230,6 +233,8 @@ Version 2017-03-12"
  '(ansi-term-color-vector
    [unspecified "#FFFFFF" "#d15120" "#5f9411" "#d2ad00" "#6b82a7" "#a66bab" "#6b82a7" "#505050"])
  '(beacon-color "#d54e53")
+ '(company-quickhelp-color-background "#4F4F4F")
+ '(company-quickhelp-color-foreground "#DCDCCC")
  '(custom-enabled-themes (quote (monokai)))
  '(custom-safe-themes
    (quote
