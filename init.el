@@ -38,6 +38,34 @@
   (package-refresh-contents)
   (package-install 'use-package))
 
+;;org-mode
+(require 'org)
+(define-key global-map "\C-cl" 'org-store-link)
+(define-key global-map "\C-ca" 'org-agenda)
+(setq org-log-done t)
+(setq org-agenda-files (list "~/org/faculdade.org"
+                             "~/org/trabalho.org" 
+                             "~/org/projetos.org"))
+
+;;neotree config
+(use-package all-the-icons
+  :ensure t)
+
+(use-package neotree
+  :ensure t
+  :config
+  (progn
+    (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))
+  :bind (("C-\\" . 'neotree-toggle)))
+
+(global-set-key (kbd "C-<tab>") 'other-window)
+
+;;php suporte
+(use-package php-mode
+  :ensure t
+  :defer t
+  :config (setq php-mode-coding-style "PSR-2"))
+
 ;;python suporte
 (add-hook 'python-mode-hook 'jedi:setup)
 (setq jedi:complete-on-dot t)
@@ -49,7 +77,7 @@
 (when (cl-find-if-not #'package-installed-p package-selected-packages)
   (package-refresh-contents)
   (mapc #'package-install package-selected-packages))
-(load-theme 'spacemacs-light t)
+(load-theme 'spacemacs-dark t)
 (helm-mode)
 (require 'helm-xref)
 (define-key global-map [remap find-file] #'helm-find-files)
@@ -72,6 +100,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(org-agenda-files nil)
  '(package-selected-packages
    (quote
     (jedi lsp-mode yasnippet lsp-treemacs helm-lsp projectile hydra flycheck company avy which-key helm-xref dap-mode spacemacs-theme json-mode))))
