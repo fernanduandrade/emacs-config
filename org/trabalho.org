@@ -1,3 +1,0 @@
-*** TODO Atualizar java
-*** TODO Cadastros das proteses 
-*** TODO Relatório de aplicação das vacinas

@@ -1,2 +1,0 @@
-** TODO Atualizar projeto react com hooks
-** TODO Adicionar JWT no projeto de agenda 
